@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>myMemoPad中級</title>
+  <link rel="stylesheet" href="css/sample.css">
+  <script src="https://kit.fontawesome.com/ab4f4e9293.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <header>
+    <h1>Memoru</h1>
+    <button id="add" class="input-add fa-solid fa-dove fa-2x"></button>
+  </header>
+
+  <div class="text-wrapper" id="main">
+    <div class="icon">
+      <img src="">
+    </div>
+    <input type="text" id="input">
+    <ul class="list">
+      <li id="save" class="fa-solid fa-flag"></li>
+      <li id="clear" class="fa-solid fa-trash"></li>
+    </ul>
+    <textarea id="text_area"></textarea>
+    <div class="time" id="time"></div>   
+  </div>
+
+  <footer>
+    <small>Memoru</small>
+  </footer>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    let jikan = new Date();
+    let Month = jikan.getMonth()+1;
+    let day = jikan.getDate();
+    let hour = jikan.getHours();
+    let minute = jikan.getMinutes();
+
+
+    // 日付を表示
+    $('#time').text(Month + "/" + day + "/" + hour + "時" + minute + "分");
+    
+    // セーブした時の挙動
+    $('#save').on('click', function () {
+        const title = $('#input').val();
+        const text = $('#text_area').val();
+        const data = {
+          title: title,
+          text: text,
+        };
+        console.log(data);
+        const JsonData = JSON.stringify(data);
+        console.log(JsonData);
+        localStorage.setItem('memo', JsonData);
+      });
+
+      
+      // クリアした時の挙動
+      $('#clear').on('click', function () {
+          localStorage.removeItem('memo');  
+          $('#input').val('');
+          $('#text_area').val('');
+
+        
+      });
+      // リロードした時の挙動
+      if (localStorage.getItem('memo')) {
+          const JsonData = localStorage.getItem('memo');
+          const data = JSON.parse(JsonData);
+          console.log(data);
+          $('#input').val(data.title);
+          $('#text_area').val(data.text);
+      }
+
+      // +を押したときの挙動
+        $('#add').on('click', function () {
+          window.location.href = '/memo03.html';
+        });
+  </script>
+
+</body>
+
+</html>
